@@ -51,28 +51,6 @@ Una vez que el proyecto esté abierto, puedes ejecutar el juego directamente des
 
 El objetivo es combinar las piezas hasta llegar al número **2048**. Si alcanzas este número, ¡ganaste! Sin embargo, si el tablero se llena y no puedes hacer más movimientos, el juego terminará.
 
-## Estructura del Proyecto
-
-Este proyecto está organizado de la siguiente manera:
-
-```
-/2048-game-godot
-│
-├── /scenes
-│   ├── panel.tscn        # Escena para cada celda del tablero
-│   └── main.tscn         # Escena principal del juego
-│
-├── /scripts
-│   └── game.gd           # Lógica del juego
-│
-├── /assets
-│   └── tiles/            # Imágenes y recursos visuales (si aplican)
-└── README.md             # Este archivo
-```
-
-- La **escena `panel.tscn`** contiene la representación visual de cada celda del tablero.
-- El **script `game.gd`** maneja la lógica del juego, incluyendo el movimiento y la fusión de tiles.
-
 ## Contribución
 
 Si quieres contribuir a este proyecto, sigue estos pasos:
