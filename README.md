@@ -1,5 +1,9 @@
 # 2048 Game en Godot 4
 
+## Demo
+
+- [Juega aquí](https://2048-game-godot.netlify.app/)
+
 ## Descripción
 
 Este es un juego de **2048** implementado en **Godot 4**. El objetivo del juego es deslizar las piezas numeradas dentro de una cuadrícula 4x4 para combinarlas y alcanzar el número **2048**. Al combinar piezas de igual valor, se duplican y se suman. El juego termina cuando no es posible mover las piezas.
@@ -64,3 +68,12 @@ Si quieres contribuir a este proyecto, sigue estos pasos:
 ## Agradecimientos
 
 - Este proyecto está inspirado en el popular juego **2048**, creado por **Gabriele Cirulli**.
+
+## Deploy en Netlify
+
+Para hacer el deploy en [Netlify](https://www.netlify.com/), recuerda agregar:
+
+```html
+<meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin" />
+<meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp" />
+```
