@@ -1,5 +1,9 @@
 extends Node2D
 
+@onready var label_score: Label = $"../CanvasLayer/MarginContainer/LabelScore"
+
+var score := 0
+
 # Configuración de la grid
 var grid_size = Vector2(4, 4)  # 4x4
 var cell_size = 100            # Tamaño de cada celda (en píxeles)
@@ -35,7 +39,13 @@ var tiles: Dictionary = {}
 
 # Función _ready: Inicializar el juego
 func _ready():
+	update_visuals()
 	spawn_new_tile()
+
+# Aumentar el score
+func score_increment(value: int):
+	score = score + value
+	label_score.text = str("Score: ", score)
 
 # Función para calcular la posición de una celda
 func get_cell_position(row: int, col: int) -> Vector2:
@@ -59,17 +69,20 @@ func spawn_tile(row: int, col: int, value: int):
 
 # Función para generar un nuevo número en una celda vacía
 func spawn_new_tile():
+	# Recorremos todas las celdas y las vacías las agregamos al array empty_cells
 	var empty_cells = []
-	for row in range(4):
-		for col in range(4):
+	for row in range(grid_size.y):
+		for col in range(grid_size.x):
 			if grid[row][col] == 0:
-				empty_cells.append(Vector2(row, col))
+				empty_cells.append(Vector2(row, col)) # Guarda las celdas vacías
 	
+	# Si existen celdas vacías
 	if empty_cells.size() > 0:
-		var random_cell = empty_cells[randi() % empty_cells.size()]
-		var new_value = [2, 4][randi() % 2]
-		grid[int(random_cell.x)][int(random_cell.y)] = new_value
-		spawn_tile(int(random_cell.x), int(random_cell.y), new_value)
+		var random_cell = empty_cells[randi() % empty_cells.size()] # Escoge una celda vacía al azar
+		var new_value = [2, 4][randi() % 2] # Decide si será un 2 o un 4
+		grid[int(random_cell.x)][int(random_cell.y)] = new_value # Lo agrega a la matriz
+		spawn_tile(int(random_cell.x), int(random_cell.y), new_value) # Lo dibuja en la pantalla
+	# Aquí con el else deberíamos hacer el game over
 
 # Detectar entrada del jugador
 func _unhandled_input(event):
@@ -93,6 +106,17 @@ func update_visuals():
 	# Crear nuevos tiles basados en la grid actualizada
 	for row in range(grid_size.y):
 		for col in range(grid_size.x):
+			
+			var cell_position = get_cell_position(row, col)
+			
+			# Crear fondo para cada celda
+			var background = ColorRect.new()
+			background.size = Vector2(cell_size, cell_size)
+			background.position = cell_position
+			background.color = tile_colors[0]
+			add_child(background)
+			
+			# Si la celda no está vacía, dibujar el tile correspondiente
 			if grid[row][col] != 0:
 				spawn_tile(row, col, grid[row][col])
 
@@ -107,8 +131,8 @@ func move_left():
 		for col in range(grid_size.x):
 			if grid[row][col] != 0:
 				if new_row.size() > 0 and new_row[-1] == grid[row][col] and not last_merged:
-					# Fusionar con el último número si son iguales
-					new_row[-1] *= 2
+					new_row[-1] *= 2 # Fusiona si son iguales
+					score_increment(new_row[-1]) # le mandamos el valor de la unión
 					last_merged = true
 					moved = true
 				else:
@@ -118,18 +142,18 @@ func move_left():
 					if col != len(new_row) - 1:
 						moved = true
 		
-		# Rellenar el resto de la fila con ceros
+		# Rellenar con ceros hasta completar 4 elementos
 		while new_row.size() < grid_size.x:
 			new_row.append(0)
 		
-		# Actualizar la fila en la grid
+		# Si la fila cambió, actualizamos la grid
 		if grid[row] != new_row:
 			grid[row] = new_row
 			moved = true
 	
 	if moved:
-		update_visuals()
-		spawn_new_tile()
+		update_visuals() # Actualiza la pantalla
+		spawn_new_tile() # Genera un nuevo número
 
 # Funciones para mover en otras direcciones (similares a move_left)
 func move_right():
@@ -143,6 +167,7 @@ func move_right():
 			if grid[row][col] != 0:
 				if new_row.size() > 0 and new_row[0] == grid[row][col] and not last_merged:
 					new_row[0] *= 2
+					score_increment(new_row[0]) # le mandamos el valor de la unión
 					last_merged = true
 					moved = true
 				else:
@@ -175,6 +200,7 @@ func move_up():
 			if grid[row][col] != 0:
 				if new_col.size() > 0 and new_col[-1] == grid[row][col] and not last_merged:
 					new_col[-1] *= 2
+					score_increment(new_col[-1]) # le mandamos el valor de la unión
 					last_merged = true
 					moved = true
 				else:
@@ -208,6 +234,7 @@ func move_down():
 			if grid[row][col] != 0:
 				if new_col.size() > 0 and new_col[0] == grid[row][col] and not last_merged:
 					new_col[0] *= 2
+					score_increment(new_col[0]) # le mandamos el valor de la unión
 					last_merged = true
 					moved = true
 				else:
@@ -231,7 +258,6 @@ func move_down():
 		spawn_new_tile()
 
 func check_game_over():	
-	print("🔍 Verificando Game Over...")
 
 	var no_moves_left = true  # Suponemos que no hay movimientos
 
