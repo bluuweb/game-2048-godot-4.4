@@ -83,10 +83,6 @@ Si quieres contribuir a este proyecto, sigue estos pasos:
 4. Haz push a tu rama (`git push origin feature/mi-nueva-funcionalidad`).
 5. Abre un pull request para que podamos revisar y fusionar tus cambios.
 
-## Licencia
-
-Este proyecto está licenciado bajo la licencia MIT - consulta el archivo [LICENSE](LICENSE) para más detalles.
-
 ## Agradecimientos
 
 - Este proyecto está inspirado en el popular juego **2048**, creado por **Gabriele Cirulli**.
