@@ -1,6 +1,7 @@
 extends Node2D
 
 @onready var label_score: Label = $"../CanvasLayer/MarginContainer/LabelScore"
+@onready var panel_game_over: Panel = $"../CanvasLayer/PanelGameOver"
 
 var score := 0
 
@@ -39,6 +40,7 @@ var tiles: Dictionary = {}
 
 # Función _ready: Inicializar el juego
 func _ready():
+	panel_game_over.hide()
 	update_visuals()
 	spawn_new_tile()
 
@@ -284,3 +286,5 @@ func check_game_over():
 
 	# ❌ **Si no hay espacios ni combinaciones, es Game Over**
 	print("❌ ¡GAME OVER!")
+	panel_game_over.show()
+	get_tree().paused = true
